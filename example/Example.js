@@ -47,6 +47,47 @@ class Example extends React.Component {
     });
   }
 
+  onMarkerOneMoveStart = (markerOne) => {
+    markerOne.measure((fx, fy, width, height, px, py) => {
+      this.setState({
+        position: {
+          x: px,
+          y: py,
+          height: height,
+          diff: 0
+        }
+      });
+    });
+  }
+
+  lastPos = null;
+  onMarkerOneMoved = (position) => {
+    if (!this.lastPos) {
+      this.lastPos = position;
+    }
+
+    this.setState({
+      position: {
+        ...this.state.position,
+        diff: (position - this.lastPos)
+      }
+    })
+  }
+
+  onMarkerOneMoveEnd = (markerOne) => {
+    this.lastPos = null;
+    markerOne.measure((fx, fy, width, height, px, py) => {
+      this.setState({
+        position: {
+          x: px,
+          y: py,
+          height: height,
+          diff: 0
+        }
+      });
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -62,6 +103,9 @@ class Example extends React.Component {
             onValuesChangeStart={this.sliderOneValuesChangeStart}
             onValuesChange={this.sliderOneValuesChange}
             onValuesChangeFinish={this.sliderOneValuesChangeFinish}
+            onMarkerOneMoveStart={this.onMarkerOneMoveStart}
+            onMarkerOneMoved={this.onMarkerOneMoved}
+            onMarkerOneMoveEnd={this.onMarkerOneMoveEnd}
           />
           <View style={styles.sliderOne}>
             <Text style={styles.text}>Two Markers:</Text>
@@ -72,6 +116,8 @@ class Example extends React.Component {
             values={[this.state.multiSliderValue[0], this.state.multiSliderValue[1]]}
             sliderLength={280}
             onValuesChange={this.multiSliderValuesChange}
+            onMarkerOneMoved={this.onMarkerOneMoved}
+            onMarkerTwoMoved={this.onMarkerTwoMoved}
             min={0}
             max={10}
             step={1}
@@ -106,6 +152,15 @@ class Example extends React.Component {
           customMarker={CustomMarker}
           sliderLength={280}
         />
+        {
+          this.state.sliderOneChanging && this.state.position ?
+            <Image style={{position: "absolute",
+              width: 74,
+              height: 40,
+              left: this.state.position.x - 74 / 2 + 24 + this.state.position.diff,
+              top: (this.state.position.y + this.state.position.height / 2) - 40 / 2 - 24,
+            }}source={require("./tooltip.png")}/> : null
+        }
       </View>
     );
   }
