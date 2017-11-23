@@ -165,6 +165,9 @@ export default class MultiSlider extends React.Component {
 
   startOne = () => {
     if (this.props.enabledOne) {
+      if (this.props.onMarkerOneMoveStart) {
+        this.props.onMarkerOneMoveStart(this._markerOne);
+      }
       this.props.onValuesChangeStart();
       this.setState({
         onePressed: !this.state.onePressed,
@@ -174,6 +177,9 @@ export default class MultiSlider extends React.Component {
 
   startTwo = () => {
     if (this.props.enabledTwo) {
+      if (this.props.onMarkerTwoMoveStart) {
+        this.props.onMarkerTwoMoveStart(this._markerTwo);
+      }
       this.props.onValuesChangeStart();
       this.setState({
         twoPressed: !this.state.twoPressed,
@@ -228,6 +234,10 @@ export default class MultiSlider extends React.Component {
         this.props.sliderLength,
         this.props.markerSize,
       );
+      
+      if (this.props.onMarkerOneMoved) {
+        this.props.onMarkerOneMoved(this.props.snapped ? snapped : confined);
+      }
       this.setState({
         positionOne: this.props.snapped ? snapped : confined,
       });
@@ -298,6 +308,9 @@ export default class MultiSlider extends React.Component {
         this.props.markerSize,
       );
 
+      if (this.props.onMarkerTwoMoved) {
+        this.props.onMarkerTwoMoved(this.props.snapped ? snapped : confined);
+      }
       this.setState({
         positionTwo: this.props.snapped ? snapped : confined,
       });
@@ -334,6 +347,9 @@ export default class MultiSlider extends React.Component {
       this.optionsArray,
       this.props.sliderLength,
     );
+    if (this.props.onMarkerOneMoveEnd) {
+      this.props.onMarkerOneMoveEnd(this._markerOne);
+    }
 
     this.setState(
       {
@@ -362,6 +378,9 @@ export default class MultiSlider extends React.Component {
       this.optionsArray,
       this.props.sliderLength,
     );
+    if (this.props.onMarkerTwoMoveEnd) {
+      this.props.onMarkerTwoMoveEnd(this._markerTwo);
+    }
 
     this.setState(
       {
