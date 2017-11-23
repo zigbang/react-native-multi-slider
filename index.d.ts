@@ -95,6 +95,12 @@ export interface MultiSliderProps {
     imageBackgroundSource?: string;
     enableLabel?: boolean;
     vertical?: boolean;
+    onMarkerOneMoveStart?: (markerOne: any) => void;
+    onMarkerOneMoved?: (position: number) => void;
+    onMarkerOneMoveEnd?: (markerOne: any) => void;
+    onMarkerTwoMoveStart?: (markerTwo: any) => void;
+    onMarkerTwoMoved?: (position: number) => void;
+    onMarkerTwoMoveEnd?: (markerTwo: any) => void;
 }
 
 export default class MultiSlider extends React.Component<MultiSliderProps> {}
